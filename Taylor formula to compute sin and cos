@@ -1,0 +1,68 @@
+//Use the series above to make up a trig table for sine and cosine, for angles in degrees from 0° to 45°, at 5° intervals. 
+//The answers should be accurate to within 10⁻⁵ Programs that just use the sin and cos functions in C++ will receive no credit.
+
+// A program to make up a trig table for sine and cosine 
+#include <iostream> 
+#include <fstream> 
+#include <stdlib.h> 
+#include <iomanip> 
+using namespace std; 
+double TylorSin(const double x, const int n) 
+{ 
+double a = 1; 
+double b = 1; 
+double c = 1; 
+double d = 0; 
+for (int i = 2; i < n; i++) 
+{ 
+a *= -1; 
+b *= (x*x); 
+c *= ((2 * i - 1)*(2 * (i - 1))); 
+d += (a*b / c); 
+} 
+return ((d + 1)*x); 
+} 
+double TylorCosine(const double x, const int n) 
+{ 
+double a = 1; 
+double b = 1; 
+double c = 1; 
+double d = 1; 
+for (int i = 2; i < n; i++) 
+{ 
+a *= -1; 
+b *= (x*x); 
+c *= ((2 * i - 3)*(2 * i - 2)); 
+d += (a*b / c); 
+} 
+return d; 
+} 
+int main(void) 
+{ 
+int n; 
+double x, z; 
+const double pi = 4 * atan((double)(1)); 
+char zzz; 
+const char filepath[] = "C:\\CoutputFiles\\Project 8 homework.txt"; 
+const char ErrorMessage[] = "Can't open file "; 
+fstream OutStream(filepath, ios::out); 
+if (OutStream.fail()) 
+{ 
+cerr << ErrorMessage << filepath; 
+cin >> zzz; 
+exit(-1); 
+} 
+cout << "Please enter the n which is lager than 6." << "\n\n"; 
+cin >> n; 
+for (z = 0; z <= 45; z += 5) 
+{ 
+x = (z / 180)*pi; 
+cout << z << " " << setprecision(5) << TylorSin(x, n) << "\n\n"; 
+OutStream << z << " " << setprecision(5) << TylorSin(x, n) << "\n\n"; 
+cout << z << " " << setprecision(5) << TylorCosine(x, n) << "\n\n"; 
+OutStream << z << " " << setprecision(5) << TylorCosine(x, n) << "\n\n"; 
+} 
+cout << "Enter any key to quit" << "\n\n"; 
+cin >> zzz; 
+return (0); 
+}
